@@ -3,15 +3,80 @@
 // LVGL version: 8.3.11
 // Project name: CNC_HMI
 
-#ifndef _UI_EVENTS_H
-#define _UI_EVENTS_H
+#include "ui.h"
+#include "../mqtt/mqtt_service.h"
+#include "../logger/logger.h"
+#include <stdio.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// Variable global para saber a quién controlamos
+// (Se actualiza con la lista de máquinas)
+int maquina_activa_id = 1; 
 
-#ifdef __cplusplus
-} /*extern "C"*/
-#endif
+// Helper para enviar comandos rápido
+void enviar_orden_cnc(const char* comando) {
+    char topico_id[32];
+    sprintf(topico_id, "maquina_%d", maquina_activa_id);
+    
+    mqtt_send_command(topico_id, comando);
+    
+    // Log para depuración
+    printf("[UI ACTION] M%d -> %s\n", maquina_activa_id, comando);
+}
 
-#endif
+// --- FUNCIONES DE MOVIMIENTO (JOG) ---
+
+void JogXPlus(lv_event_t * e) {
+    enviar_orden_cnc("JOG:X:10");
+}
+
+void JogXMinus(lv_event_t * e) {
+    enviar_orden_cnc("JOG:X:-10");
+}
+
+void JogYPlus(lv_event_t * e) {
+    enviar_orden_cnc("JOG:Y:10");
+}
+
+void JogYMinus(lv_event_t * e) {
+    enviar_orden_cnc("JOG:Y:-10");
+}
+
+void JogZPlus(lv_event_t * e) {
+    enviar_orden_cnc("JOG:Z:5");
+}
+
+void JogZMinus(lv_event_t * e) {
+    enviar_orden_cnc("JOG:Z:-5");
+}
+
+// --- FUNCIONES DE CONTROL ---
+
+void CmdHome(lv_event_t * e) {
+    enviar_orden_cnc("HOME"); // G28
+    logger_log("INFO", "Usuario envio HOME");
+}
+
+void CmdStop(lv_event_t * e) {
+    enviar_orden_cnc("STOP"); // Paro suave/Pausa
+    logger_log("ALERTA", "Usuario presiono STOP local");
+}
+
+void EmergenciaTotal(lv_event_t * e) {
+    // Enviar a un tópico especial o iterar por todas
+    mqtt_send_command("todas", "EMERGENCIA");
+    logger_log("CRITICO", "BOTON DE PARO GENERAL PRESIONADO");
+}
+
+// --- SELECCIÓN DE MÁQUINA ---
+
+void SelectorMaquina(lv_event_t * e) {
+    lv_obj_t * dropdown = lv_event_get_target(e);
+    
+    // Obtener cuál opción se eligió (0, 1, 2...)
+    int index = lv_dropdown_get_selected(dropdown);
+    
+    // Ajustamos ID (suponiendo que la lista es "Maquina 1", "Maquina 2"...)
+    maquina_activa_id = index + 1;
+    
+    printf("[UI] Ahora controlando Maquina %d\n", maquina_activa_id);
+}
