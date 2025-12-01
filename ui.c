@@ -34,6 +34,7 @@ void ui_init(void)
                                                true, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     ui_main_screen_init();
+    ui_seleccionarTarea_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_main);
 }
@@ -41,9 +42,11 @@ void ui_init(void)
 void ui_destroy(void)
 {
     ui_main_screen_destroy();
+    ui_seleccionarTarea_screen_destroy();
 }
 
 void ui_relocalize(void)
 {
     ui_main_screen_relocalize();
+    ui_seleccionarTarea_screen_relocalize();
 }

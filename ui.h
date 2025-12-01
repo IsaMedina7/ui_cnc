@@ -20,6 +20,7 @@ extern "C" {
 ///////////////////// SCREENS ////////////////////
 
 #include "screens/ui_main.h"
+#include "screens/ui_seleccionarTarea.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -29,7 +30,12 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
+LV_IMG_DECLARE(ui_img_plus_png);    // assets/plus.png
+LV_IMG_DECLARE(ui_img_hibernacion_png);    // assets/hibernacion.png
+LV_IMG_DECLARE(ui_img_680980976);    // assets/boton-de-pausa (1).png
+LV_IMG_DECLARE(ui_img_324518500);    // assets/punta-de-flecha-del-boton-de-reproduccion.png
 LV_IMG_DECLARE(ui_img_home_24_png);    // assets/home 24.png
+LV_IMG_DECLARE(ui_img_745144479);    // assets/flecha-izquierda.png
 
 // UI INIT
 void ui_init(void);
