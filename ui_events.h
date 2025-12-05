@@ -10,6 +10,22 @@
 extern "C" {
 #endif
 
+void parado_total(lv_event_t * e);
+void listar_maquinas(lv_event_t * e);
+void agregar_tarea(lv_event_t * e);
+void pauseMachine(lv_event_t * e);
+void iniciarCorte(lv_event_t * e);
+void mover_x_pos(lv_event_t * e);
+void mover_x_neg(lv_event_t * e);
+void mover_y_pos(lv_event_t * e);
+void mover_y_neg(lv_event_t * e);
+void mover_z_pos(lv_event_t * e);
+void mover_z_neg(lv_event_t * e);
+void parado_de_emergencia(lv_event_t * e);
+void home_positions(lv_event_t * e);
+void asignar_tarea(lv_event_t * e);
+void retrocederMain(lv_event_t * e);
+
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif
